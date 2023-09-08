@@ -1,0 +1,40 @@
+article {
+  flex: 1;
+  flex-basis: 0;
+  height: auto;
+  width: 300px;
+  background-color: #f0f9ff;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s;
+}
+
+article img{
+ height: 300px; 
+}
+
+article:hover{
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+section {
+  height: auto;
+  width: auto;
+  border-radius: inherit;
+  background: #0284c7;
+
+}
+
+section div {
+  background: #0369a1;
+  width: 180px;
+  border-radius: 8px;
+  margin: auto;
+}
+section p {
+  text-transform: capitalize;
+  color: #ffffff;
+  font-size: 24px;
+}
