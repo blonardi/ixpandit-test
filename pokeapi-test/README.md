@@ -1,8 +1,21 @@
-# React + Vite
+# PokeAPI React App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Descripción
 
-Currently, two official plugins are available:
+Esta es una aplicación web simple desarrollada en React que utiliza la PokeAPI para buscar y mostrar información sobre los Pokémon. Puedes buscar Pokémon por nombre y ver detalles como su tipo y habilidades.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Cómo comenzar
+
+Siga estos pasos para ejecutar el proyecto en su máquina local.
+
+### 1. Clonar el repositorio
+
+***En consola***
+- git clone https://github.com/tu-usuario/pokeapi-react-app.git
+- cd pokeapi-react-app
+- npm install
+- npm run dev
+
+## Uso de la app
+
+Ingrese el nombre de un Pokémon en el campo de búsqueda y se renderizaran las carta de los pokemones que su nombre coincida con su busqueda.

@@ -1,6 +1,6 @@
-import "./App.css";
-import { useState, useEffect } from "react";
-import { CardPokemon } from "./components/CardPokemon";
+import './App.css'
+import { useState, useEffect } from 'react'
+import { CardPokemon } from './components/CardPokemon'
 
 // import { useFetch } from "./services/useFetch";
 export const App = () => {
@@ -8,81 +8,81 @@ export const App = () => {
   //   "https://pokeapi.co/api/v2/pokemon"
   // );
 
-  const [pokemonData, setPokemonData] = useState([]);
-  const [pokemonList, setPokemonList] = useState();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [pokemonData, setPokemonData] = useState([])
+  const [pokemonList, setPokemonList] = useState()
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
   useEffect(() => {
-    setLoading(true);
-    async function getPokemonsName() {
+    setLoading(true)
+    async function getPokemonsName () {
       try {
         const responseFetch = await fetch(
-          "https://pokeapi.co/api/v2/pokemon?limit=51"
-        );
+          'https://pokeapi.co/api/v2/pokemon?limit=51'
+        )
 
         if (!responseFetch.ok) {
-          throw new Error("Bad response. Status code: ", responseFetch.status);
+          throw new Error('Bad response. Status code: ', responseFetch.status)
         }
 
-        const data = await responseFetch.json();
+        const data = await responseFetch.json()
 
-        const updatedPokemonList = [];
+        const updatedPokemonList = []
 
         // Obtener detalles de cada Pokémon individual
         for (const pokemon of data.results) {
           const pokemonData = await fetch(pokemon.url).then((response) =>
             response.json()
-          );
+          )
           updatedPokemonList.push({
             id: pokemonData.id,
             name: pokemonData.name,
             image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemonData.id}.png` // URL de la imagen
-          });
+          })
         }
-        setPokemonData(updatedPokemonList);
-        setPokemonList(updatedPokemonList);
+        setPokemonData(updatedPokemonList)
+        setPokemonList(updatedPokemonList)
       } catch (err) {
-        setError(err);
+        setError(err)
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
     }
-    getPokemonsName();
-  }, []);
+    getPokemonsName()
+  }, [])
 
   const handleChange = (event) => {
-    const searchedPokemon = event.target.value;
-    console.log("searchedPokemon", searchedPokemon);
-    filterPokemon(pokemonData, searchedPokemon);
-  };
+    const searchedPokemon = event.target.value
+    console.log('searchedPokemon', searchedPokemon)
+    filterPokemon(pokemonData, searchedPokemon)
+  }
 
   const filterPokemon = (pokemonData, searchedPokemon) => {
     // console.log("searchedPoke: ", searchedPokemon);
     const filteredPokemons = pokemonData.filter((pokemon) => {
-      return pokemon.name.toLowerCase().includes(searchedPokemon);
-    });
+      return pokemon.name.toLowerCase().includes(searchedPokemon)
+    })
 
-    console.log("filteredPok: ", filteredPokemons);
-    setPokemonList(filteredPokemons);
-  };
+    console.log('filteredPok: ', filteredPokemons)
+    setPokemonList(filteredPokemons)
+  }
 
   return (
-    <div className="App">
-      <div className="container">
+    <div className='App'>
+      <div className='container'>
         <header>
-          <div className="title">
+          <div className='title'>
             <h1>Lista de Pokémon</h1>
           </div>
-          <div className="warningStates">
+          <div className='warningStates'>
             {error && <li>Error: {error}</li>}
             {loading && <h4>Loading </h4>}
           </div>
           <form>
-            <label htmlFor="buscadorPokemons">
+            <label htmlFor='buscadorPokemons'>
               <input
-                type="text"
-                placeholder="Busca tu pokemon favorito.."
+                type='text'
+                placeholder='Busca tu pokemon favorito..'
                 onChange={handleChange}
               />
             </label>
@@ -95,5 +95,5 @@ export const App = () => {
         </main>
       </div>
     </div>
-  );
-};
+  )
+}
