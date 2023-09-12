@@ -8,6 +8,8 @@ export const App = () => {
   //   "https://pokeapi.co/api/v2/pokemon"
   // );
 
+  const [allPokemons, setAllPokemons] = useState([])
+
   const [pokemonData, setPokemonData] = useState([])
   const [pokemonList, setPokemonList] = useState()
   const [loading, setLoading] = useState(true)
@@ -15,55 +17,66 @@ export const App = () => {
 
   useEffect(() => {
     setLoading(true)
-    async function getPokemonsName () {
+    const getAllPokemons = async () => {
       try {
         const responseFetch = await fetch(
           'https://pokeapi.co/api/v2/pokemon?limit=51'
         )
-
         if (!responseFetch.ok) {
           throw new Error('Bad response. Status code: ', responseFetch.status)
         }
-
-        const data = await responseFetch.json()
-
-        const updatedPokemonList = []
+        const { results } = await responseFetch.json()
+        setAllPokemons(results)
 
         // Obtener detalles de cada Pokémon individual
-        for (const pokemon of data.results) {
-          const pokemonData = await fetch(pokemon.url).then((response) =>
-            response.json()
-          )
-          updatedPokemonList.push({
-            id: pokemonData.id,
-            name: pokemonData.name,
-            image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemonData.id}.png` // URL de la imagen
-          })
-        }
-        setPokemonData(updatedPokemonList)
-        setPokemonList(updatedPokemonList)
-      } catch (err) {
-        setError(err)
+      } catch (error) {
+        setError(error)
       } finally {
         setLoading(false)
       }
     }
-    getPokemonsName()
+    getAllPokemons()
   }, [])
+
+  useEffect(() => {
+    if (!allPokemons) return
+
+    const getPokemonData = async () => {
+      try {
+        const updatedPokemonList = []
+        for (const pokemon of allPokemons) {
+          const pokemonData = await fetch(pokemon.url).then((response) =>
+            response.json()
+          )
+          const pokemonToPush = {
+            id: pokemonData.id,
+            name: pokemonData.name,
+            image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemonData.id}.png` // URL de la imagen
+          }
+          // console.log(pokemonData)
+          updatedPokemonList.push(pokemonToPush)
+        }
+        setPokemonList(updatedPokemonList)
+        setPokemonData(updatedPokemonList)
+      } catch (error) {
+        setError(error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    getPokemonData()
+  }, [allPokemons])
 
   const handleChange = (event) => {
     const searchedPokemon = event.target.value
-    console.log('searchedPokemon', searchedPokemon)
     filterPokemon(pokemonData, searchedPokemon)
   }
 
   const filterPokemon = (pokemonData, searchedPokemon) => {
-    // console.log("searchedPoke: ", searchedPokemon);
     const filteredPokemons = pokemonData.filter((pokemon) => {
       return pokemon.name.toLowerCase().includes(searchedPokemon)
     })
 
-    console.log('filteredPok: ', filteredPokemons)
     setPokemonList(filteredPokemons)
   }
 
@@ -75,8 +88,8 @@ export const App = () => {
             <h1>Lista de Pokémon</h1>
           </div>
           <div className='warningStates'>
-            {error && <li>Error: {error}</li>}
-            {loading && <h4>Loading </h4>}
+            {error && <h4>Error: {error}</h4>}
+            {loading && <h4>Loading..</h4>}
           </div>
           <form>
             <label htmlFor='buscadorPokemons'>
